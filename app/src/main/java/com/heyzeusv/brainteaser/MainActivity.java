@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     Button answer2;
     Button answer3;
     Button answer4;
+    Button reset;
     TextView timer;
     TextView score;
     TextView equation;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public void startGame(View view) {
 
         start   .setVisibility(View.INVISIBLE);
+        reset   .setVisibility(View.INVISIBLE);
         answer1 .setVisibility(View.VISIBLE);
         answer2 .setVisibility(View.VISIBLE);
         answer3 .setVisibility(View.VISIBLE);
@@ -58,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
 
+                reset.setVisibility(View.VISIBLE);
+                for (int i = 0; i < buttons.size(); i++) {
+
+                    buttons.get(i).setEnabled(false);
+                }
             }
         }.start();
         questionAnswer();
@@ -151,6 +158,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void reset (View view) {
+
+        for (int i = 0; i < buttons.size(); i++) {
+
+            buttons.get(i).setEnabled(true);
+        }
+        answersCorrect = 0;
+        questionsAttempted = 0;
+        score.setText("0/0");
+        startGame(view);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         answer2  = (Button) findViewById(R.id.answer2);
         answer3  = (Button) findViewById(R.id.answer3);
         answer4  = (Button) findViewById(R.id.answer4);
+        reset    = (Button) findViewById(R.id.reset);
 
         answersList.add(0);
         answersList.add(0);
