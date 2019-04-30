@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
 
                 reset.setVisibility(View.VISIBLE);
+                // makes it so buttons can't be continued to be pressed
                 for (int i = 0; i < buttons.size(); i++) {
 
                     buttons.get(i).setEnabled(false);
@@ -70,9 +71,12 @@ public class MainActivity extends AppCompatActivity {
         questionAnswer();
     }
 
+    // function that comes up with an equation, its answer, and 3 random answers
     public void questionAnswer() {
 
+        // currently only does addition, subtraction, and multiplication
         int operator = random.nextInt(3);
+        // digit range 1-20
         int operand1 = random.nextInt(20) + 1;
         int operand2 = random.nextInt(20) + 1;
 
@@ -81,31 +85,36 @@ public class MainActivity extends AppCompatActivity {
         int fakeAnswer3;
         answer = 0;
 
+        // string to pass to equation textView
         String eq;
 
+        // randomly shuffles buttons arrayList
         Collections.shuffle(buttons);
 
+        // 0: addition; 1: subtraction; 2: multiplication
         switch (operator) {
 
             case 0:
                 answer = operand1 + operand2;
-                eq = String.valueOf(operand1) + " + " + String.valueOf(operand2);
+                eq = operand1 + " + " + operand2;
                 equation.setText(eq);
                 break;
 
             case 1:
                 answer = operand1 - operand2;
-                eq = String.valueOf(operand1) + " - " + String.valueOf(operand2);
+                eq = operand1 + " - " + operand2;
                 equation.setText(eq);
                 break;
 
             case 2:
                 answer = operand1 * operand2;
-                eq = String.valueOf(operand1) + " * " + String.valueOf(operand2);
+                eq = operand1 + " * " + operand2;
                 equation.setText(eq);
                 break;
         }
 
+        // makes fake answers -10 to +10 from actual answer
+        // makes sure that no fake answers == actual answer or other fake answers
         do {
             fakeAnswer1 = random.nextInt(10 + 1 + 10) - 10 + answer;
             fakeAnswer2 = random.nextInt(10 + 1 + 10) - 10 + answer;
@@ -119,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         answers.add(fakeAnswer2);
         answers.add(fakeAnswer3);
 
+        // sets button text to answer/fake answers
         for (int i = 0; i < buttons.size(); i++) {
 
             buttons.get(i).setText(String.format(answers.get(i).toString()));
@@ -127,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkAnswer(View view) {
 
+        // all buttons use this for onClick, but don't need a Button obj for each
         Button buttonPressed = (Button) view;
         if (answer == Integer.parseInt(buttonPressed.getText().toString())) {
 
@@ -160,10 +171,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void reset (View view) {
 
+        // re-enables buttons
         for (int i = 0; i < buttons.size(); i++) {
 
             buttons.get(i).setEnabled(true);
         }
+        // resets score values
         answersCorrect = 0;
         questionsAttempted = 0;
         score.setText("0/0");
@@ -178,12 +191,12 @@ public class MainActivity extends AppCompatActivity {
         timer    = (TextView) findViewById(R.id.timeLeft);
         score    = (TextView) findViewById(R.id.score);
         equation = (TextView) findViewById(R.id.equation);
-        start    = (Button) findViewById(R.id.startButton);
-        answer1  = (Button) findViewById(R.id.answer1);
-        answer2  = (Button) findViewById(R.id.answer2);
-        answer3  = (Button) findViewById(R.id.answer3);
-        answer4  = (Button) findViewById(R.id.answer4);
-        reset    = (Button) findViewById(R.id.reset);
+        start    = (Button)   findViewById(R.id.startButton);
+        answer1  = (Button)   findViewById(R.id.answer1);
+        answer2  = (Button)   findViewById(R.id.answer2);
+        answer3  = (Button)   findViewById(R.id.answer3);
+        answer4  = (Button)   findViewById(R.id.answer4);
+        reset    = (Button)   findViewById(R.id.reset);
 
         answersList.add(0);
         answersList.add(0);
