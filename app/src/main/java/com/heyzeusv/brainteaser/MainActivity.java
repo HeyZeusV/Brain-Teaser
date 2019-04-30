@@ -3,6 +3,7 @@ package com.heyzeusv.brainteaser;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     TextView equation;
 
     int answer;
+    int answersCorrect;
+    int questionsAttempted;
+
     ArrayList<Integer> answersList = new ArrayList<Integer>();
     ArrayList<Button> buttons = new ArrayList<Button>();
 
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         timer   .setVisibility(View.VISIBLE);
         score   .setVisibility(View.VISIBLE);
         equation.setVisibility(View.VISIBLE);
+
+        answersCorrect = 0;
+        questionsAttempted = 0;
 
         new CountDownTimer(31000, 1000) {
 
@@ -96,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
             fakeAnswer1 = random.nextInt(10 + 1 + 10) - 10 + answer;
             fakeAnswer2 = random.nextInt(10 + 1 + 10) - 10 + answer;
             fakeAnswer3 = random.nextInt(10 + 1 + 10) - 10 + answer;
-        } while (fakeAnswer1 == answer || fakeAnswer2 == answer || fakeAnswer3 == answer);
+        } while (fakeAnswer1 == answer || fakeAnswer2 == answer || fakeAnswer3 == answer
+        || fakeAnswer1 == fakeAnswer2 || fakeAnswer1 == fakeAnswer3 || fakeAnswer2 == fakeAnswer3);
 
         ArrayList<Integer> answers = new ArrayList<Integer>();
         answers.add(answer);
@@ -107,6 +115,39 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < buttons.size(); i++) {
 
             buttons.get(i).setText(String.format(answers.get(i).toString()));
+        }
+    }
+
+    public void checkAnswer(View view) {
+
+        Button buttonPressed = (Button) view;
+        if (answer == Integer.parseInt(buttonPressed.getText().toString())) {
+
+            updateScore(true);
+            questionAnswer();
+        } else {
+
+            updateScore(false);
+            questionAnswer();
+        }
+
+    }
+
+    public void updateScore(boolean correct) {
+
+        String newScore = "";
+
+        if (correct) {
+
+            answersCorrect += 1;
+            questionsAttempted += 1;
+            newScore = answersCorrect + "/" + questionsAttempted;
+            score.setText(newScore);
+        } else {
+
+            questionsAttempted += 1;
+            newScore = answersCorrect + "/" + questionsAttempted;
+            score.setText(newScore);
         }
     }
 
