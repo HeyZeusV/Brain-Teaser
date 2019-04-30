@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +21,10 @@ public class MainActivity extends AppCompatActivity {
     TextView timer;
     TextView score;
     TextView equation;
+
+    int answer;
+    ArrayList<Integer> answersList = new ArrayList<Integer>();
+    ArrayList<Button> buttons = new ArrayList<Button>();
 
     Random random = new Random();
 
@@ -55,8 +61,16 @@ public class MainActivity extends AppCompatActivity {
         int operator = random.nextInt(3);
         int operand1 = random.nextInt(20) + 1;
         int operand2 = random.nextInt(20) + 1;
-        int answer = 0;
+
+        int fakeAnswer1;
+        int fakeAnswer2;
+        int fakeAnswer3;
+        answer = 0;
+
         String eq;
+
+        Collections.shuffle(buttons);
+
         switch (operator) {
 
             case 0:
@@ -78,7 +92,22 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        answer1.setText(String.valueOf(answer));
+        do {
+            fakeAnswer1 = random.nextInt(10 + 1 + 10) - 10 + answer;
+            fakeAnswer2 = random.nextInt(10 + 1 + 10) - 10 + answer;
+            fakeAnswer3 = random.nextInt(10 + 1 + 10) - 10 + answer;
+        } while (fakeAnswer1 == answer || fakeAnswer2 == answer || fakeAnswer3 == answer);
+
+        ArrayList<Integer> answers = new ArrayList<Integer>();
+        answers.add(answer);
+        answers.add(fakeAnswer1);
+        answers.add(fakeAnswer2);
+        answers.add(fakeAnswer3);
+
+        for (int i = 0; i < buttons.size(); i++) {
+
+            buttons.get(i).setText(String.format(answers.get(i).toString()));
+        }
     }
 
     @Override
@@ -94,5 +123,15 @@ public class MainActivity extends AppCompatActivity {
         answer2  = (Button) findViewById(R.id.answer2);
         answer3  = (Button) findViewById(R.id.answer3);
         answer4  = (Button) findViewById(R.id.answer4);
+
+        answersList.add(0);
+        answersList.add(0);
+        answersList.add(0);
+        answersList.add(0);
+
+        buttons.add(answer1);
+        buttons.add(answer2);
+        buttons.add(answer3);
+        buttons.add(answer4);
     }
 }
